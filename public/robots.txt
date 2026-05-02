@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://cmr-malakpet.example.com
+
+# Sitemaps
+Sitemap: https://cmr-malakpet.example.com/sitemap.xml

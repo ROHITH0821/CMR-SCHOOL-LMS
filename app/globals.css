@@ -1,26 +1,127 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --primary: 10 36 99; /* #0A2463 */
+    --accent: 245 166 35; /* #F5A623 */
+    --secondary: 30 58 138;
+    --surface: 255 255 255; /* #FFFFFF */
+    --text-primary: 15 23 42;
+    --text-secondary: 71 85 105;
+    --text-muted: 148 163 184;
+    --border: 226 232 240;
+    --card-bg: 248 250 252;
+    --section-alt: 241 245 249;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#FFFFFF] font-body text-textPrimary antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-[#0A2463];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .glass-nav {
+    @apply sticky top-0 z-50 border-b border-white/30 bg-white/65 backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 supports-[backdrop-filter]:bg-white/55;
+  }
+
+  .glass-nav-scrolled {
+    @apply border-border bg-white/85 shadow-soft;
+  }
+
+  .btn-primary {
+    @apply transform rounded-full bg-[#F5A623] px-8 py-3 font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-[#F5A623]/90 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply transform rounded-full border-2 border-white px-8 py-3 font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-[#0A2463] active:scale-95;
+  }
+
+  .section-padding {
+    @apply px-5 py-16 sm:px-12 lg:px-24 md:py-24;
+  }
+  
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* CSS 3D flip — front/back on hover */
+  .flip-scene {
+    perspective: 1200px;
+  }
+
+  .flip-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .flip-scene:hover .flip-card,
+  .flip-scene:focus-within .flip-card {
+    transform: rotateY(180deg);
+  }
+
+  .flip-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .flip-back {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Announcement + achievement marquees */
+@keyframes billboard-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-ticker {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: billboard-marquee 32s linear infinite;
+}
+
+.marquee-ticker:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ach-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ach-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 2.5rem;
+  animation: ach-marquee 28s linear infinite;
+}
+
+.ach-marquee-track:hover {
+  animation-play-state: paused;
 }
