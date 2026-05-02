@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Newspaper } from "lucide-react";
 
-const ITEMS = [
+const STATIC_ITEMS = [
   {
     slug: "nep-labs-opening",
     title: "NEP-aligned labs open for students",
@@ -29,8 +29,21 @@ const ITEMS = [
   },
 ];
 
-export function WhatsHappeningSection() {
+interface NewsItem {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  img: string;
+}
+
+interface WhatsHappeningSectionProps {
+  initialData?: NewsItem[];
+}
+
+export function WhatsHappeningSection({ initialData }: WhatsHappeningSectionProps) {
   const reduceMotion = useReducedMotion();
+  const items = initialData && initialData.length > 0 ? initialData : STATIC_ITEMS;
 
   return (
     <section className="bg-[#FDFBF7] py-16 md:py-24">
@@ -58,7 +71,7 @@ export function WhatsHappeningSection() {
         </div>
 
         <div className="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-          {ITEMS.map((item, i) => (
+          {items.slice(0, 3).map((item, i) => (
             <motion.article
               key={item.slug}
               initial={reduceMotion ? false : { opacity: 0, y: 14 }}
@@ -66,7 +79,7 @@ export function WhatsHappeningSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.45 }}
               className={`group overflow-hidden rounded-2xl border border-[#0A2463]/10 bg-white shadow-[0_16px_50px_-28px_rgba(10,36,99,0.15)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_60px_-24px_rgba(10,36,99,0.2)] ${
-                ITEMS.length % 2 !== 0 && i === ITEMS.length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
+                items.slice(0, 3).length % 2 !== 0 && i === items.slice(0, 3).length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
               }`}
             >
               <Link href={`/news/${item.slug}`} className="block">

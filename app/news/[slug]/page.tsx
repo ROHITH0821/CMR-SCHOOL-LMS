@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 const articles: Record<
   string,
@@ -80,18 +80,20 @@ const articles: Record<
   },
 };
 
-export function generateMetadata({ params }: Props): Metadata {
-  const a = articles[params.slug];
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const a = articles[slug];
   if (!a) return { title: "Article" };
   return { title: a.title, description: a.body[0]?.slice(0, 155) };
 }
 
-export default function NewsArticlePage({ params }: Props) {
-  const a = articles[params.slug];
+export default async function NewsArticlePage({ params }: Props) {
+  const { slug } = await params;
+  const a = articles[slug];
   if (!a) notFound();
 
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://cmr-malakpet.example.com";
-  const shareUrl = `${base}/news/${params.slug}`;
+  const shareUrl = `${base}/news/${slug}`;
 
   return (
     <article className="bg-white">

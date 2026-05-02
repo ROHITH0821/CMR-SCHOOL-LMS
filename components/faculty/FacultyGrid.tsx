@@ -9,12 +9,16 @@ import { FACULTY, type FacultyMember } from "@/lib/faculty-data";
 
 const departments = ["All", "Science", "Maths", "Languages", "Social", "PE", "Arts"] as const;
 
-const hod = FACULTY.slice(0, 3);
+interface FacultyGridProps {
+  initialData?: FacultyMember[];
+}
 
-export function FacultyGrid() {
+export function FacultyGrid({ initialData }: FacultyGridProps) {
   const [dept, setDept] = useState<(typeof departments)[number]>("All");
-
-  const list = dept === "All" ? FACULTY : FACULTY.filter((f) => f.dept === dept);
+  
+  const allFaculty = initialData && initialData.length > 0 ? initialData : FACULTY;
+  const list = dept === "All" ? allFaculty : allFaculty.filter((f) => f.dept === dept);
+  const hod = allFaculty.slice(0, 3);
 
   return (
     <div>
@@ -24,8 +28,10 @@ export function FacultyGrid() {
             key={d}
             type="button"
             onClick={() => setDept(d)}
-            className={`rounded-pill px-4 py-2 text-sm font-medium ${
-              dept === d ? "bg-primary text-white" : "bg-sectionAlt text-textSecondary"
+            className={`rounded-pill px-5 py-2.5 text-sm font-semibold transition-all ${
+              dept === d 
+                ? "bg-[#0A2463] text-white shadow-md shadow-[#0A2463]/20" 
+                : "bg-gray-100 text-[#0A2463]/60 hover:bg-gray-200"
             }`}
           >
             {d}
@@ -33,8 +39,11 @@ export function FacultyGrid() {
         ))}
       </div>
 
-      <section className="mb-14">
-        <h2 className="mb-6 font-display text-2xl text-primary">HOD spotlight</h2>
+      <section className="mb-20">
+        <h2 className="mb-8 font-display text-2xl font-bold text-[#0A2463] flex items-center gap-3">
+          <span className="w-8 h-[2px] bg-[#F5A623]" />
+          Department heads
+        </h2>
         <div className="grid gap-8 md:grid-cols-3">
           {hod.map((f) => (
             <FacultyCard key={f.slug} f={f} large />
@@ -42,14 +51,19 @@ export function FacultyGrid() {
         </div>
       </section>
 
-      <h2 className="mb-6 font-display text-2xl text-primary">All faculty</h2>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
-          {list.map((f) => (
-            <FacultyCard key={f.slug} f={f} />
-          ))}
-        </AnimatePresence>
-      </div>
+      <section>
+        <h2 className="mb-8 font-display text-2xl font-bold text-[#0A2463] flex items-center gap-3">
+          <span className="w-8 h-[2px] bg-[#0DB6B5]" />
+          Our educators
+        </h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {list.map((f) => (
+              <FacultyCard key={f.slug} f={f} />
+            ))}
+          </AnimatePresence>
+        </div>
+      </section>
     </div>
   );
 }
@@ -61,43 +75,36 @@ function FacultyCard({
   f: FacultyMember;
   large?: boolean;
 }) {
-  const imgH = large ? "h-56 sm:h-[15rem]" : "h-48 sm:h-52";
+  const imgH = large ? "h-64 sm:h-[18rem]" : "h-52 sm:h-56";
 
   return (
-    <motion.div layout className={`relative ${large ? "min-h-[360px]" : "min-h-[320px]"}`}>
+    <motion.div layout className={`relative ${large ? "min-h-[420px]" : "min-h-[360px]"}`}>
       <Link
         href={`/faculty/${f.slug}`}
-        className="group relative block h-full overflow-hidden rounded-card border border-border bg-white shadow-soft transition-all duration-500 ease-quartOut hover:-translate-y-2 hover:border-[#F5A623]/35 hover:shadow-[0_22px_50px_-12px_rgba(15,23,42,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A2463]"
+        className="group relative block h-full overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-[0_8px_30px_-10px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_60px_-15px_rgba(10,36,99,0.15)]"
       >
         <div className={`relative ${imgH} overflow-hidden`}>
           <Image
             src={f.photo}
             alt={f.name}
             fill
-            className="object-cover object-[center_22%] transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+            className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
             sizes={large ? "(max-width: 768px) 100vw, 33vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         </div>
 
-        <div className="relative z-[2] border-t border-black/[0.06] bg-white p-4">
-          <p className="font-display text-lg text-primary">{f.name}</p>
-          <p className="text-sm text-highlight">{f.subject}</p>
-          <p className="mt-1 text-xs text-textMuted">{f.qual}</p>
-          <p className="mt-2 font-mono text-xs text-textSecondary">{f.years} yrs experience</p>
-          <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#0DB6B5]">
-            View profile
-            <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
-          </p>
-        </div>
-
-        <div className="pointer-events-none absolute inset-0 z-[3] flex flex-col justify-center rounded-[inherit] bg-gradient-to-br from-stone-900/[0.97] via-zinc-900/[0.96] to-neutral-950/[0.98] p-6 opacity-0 shadow-inner ring-1 ring-white/10 transition-all duration-500 ease-out [backface-visibility:hidden] group-hover:opacity-100 group-hover:backdrop-blur-[1px]">
-          <div className="translate-y-5 opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
-            <p className="font-body text-sm leading-relaxed text-white/95">{f.bio}</p>
-            <p className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#F5A623]">
-              Open full profile
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </p>
+        <div className="p-6">
+          <p className="font-display text-xl font-bold text-[#0A2463]">{f.name}</p>
+          <p className="text-sm font-semibold text-[#0DB6B5] uppercase tracking-wider mt-1">{f.subject}</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <span className="px-3 py-1 rounded-full bg-gray-50 text-[10px] font-bold text-gray-500 uppercase tracking-widest">{f.qual}</span>
+            <span className="px-3 py-1 rounded-full bg-[#F5A623]/10 text-[10px] font-bold text-[#F5A623] uppercase tracking-widest">{f.years} yrs exp</span>
           </div>
+          <p className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-[#0A2463] group-hover:text-[#F5A623] transition-colors">
+            Meet profile
+            <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </p>
         </div>
       </Link>
     </motion.div>

@@ -11,26 +11,26 @@ export function HeroSection() {
       */}
       
       {/* Mobile Image (Visible only on small screens) */}
-      <div className="block md:hidden relative h-full w-full">
+      <div className="block md:hidden absolute inset-0">
         <Image
           src="/images/hero-school-mobile.jpg"
           alt={`${CAMPUS_NAME} — official campus`}
           fill
           priority
           className="object-cover object-center brightness-[0.85]"
-          sizes="(max-width: 768px) 100vw, 1px"
+          sizes="(max-width: 768px) 100vw, 0vw"
         />
       </div>
 
       {/* Desktop Image (Visible only on medium screens and up) */}
-      <div className="hidden md:block relative h-full w-full">
+      <div className="hidden md:block absolute inset-0">
         <Image
           src="/images/hero-school.jpg"
           alt={`${CAMPUS_NAME} — official campus`}
           fill
           priority
           className="object-cover object-center brightness-[0.85]"
-          sizes="(min-width: 768px) 100vw, 1px"
+          sizes="(min-width: 768px) 100vw, 0vw"
         />
       </div>
 

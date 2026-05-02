@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { EventsCalendar } from "@/components/events/EventsCalendar";
+import { Suspense } from "react";
+import { EventsCalendar } from "@/components/events/DynamicEvents";
 import { MapPin, Clock, Calendar, Download } from "lucide-react";
 
 const container = {

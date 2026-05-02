@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Timeline } from "@/components/about/Timeline";
+import { Suspense } from "react";
+import { Timeline } from "@/components/about/DynamicAbout";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -67,7 +68,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Timeline />
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50 rounded-3xl mx-auto max-w-7xl" />}>
+        <Timeline />
+      </Suspense>
 
       <section id="leadership" className="scroll-mt-28 section-padding bg-sectionAlt">
         <div className="container-custom">

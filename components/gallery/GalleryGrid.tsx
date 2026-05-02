@@ -185,6 +185,7 @@ export function GalleryGrid({ initialData }: { initialData?: MediaItem[] }) {
                   alt={selectedItem.title}
                   fill
                   className="object-contain"
+                  sizes="100vw"
                 />
               )}
             </motion.div>

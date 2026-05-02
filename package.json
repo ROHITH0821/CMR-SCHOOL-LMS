@@ -14,35 +14,32 @@
     "@react-three/drei": "^9.108.0",
     "@react-three/fiber": "^8.16.1",
     "@sanity/client": "^7.20.0",
-    "@studio-freight/react-lenis": "^0.0.47",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/three": "^0.183.1",
-    "@types/vanilla-tilt": "^1.4.1",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "firebase": "^12.11.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
+    "lenis": "^1.1.20",
     "lucide-react": "^1.8.0",
-    "maath": "^0.10.8",
     "next": "16.2.4",
     "react": "19.2.5",
     "react-big-calendar": "^1.19.4",
     "react-dom": "19.2.5",
     "tailwind-merge": "^3.5.0",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.183.2",
-    "vanilla-tilt": "^1.8.1"
+    "three": "^0.183.2"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "19.2.14",
     "@types/react-big-calendar": "^1.16.3",
     "@types/react-dom": "19.2.3",
+    "@types/three": "^0.183.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
@@ -50,5 +47,13 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom",
+    "three": "^0.183.2",
+    "scheduler": "0.27.0",
+    "zustand": "^4.5.7",
+    "@types/react": "19.2.14"
   }
 }

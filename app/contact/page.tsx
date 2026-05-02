@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/forms/ContactForm";
+import { Suspense } from "react";
+import { ContactForm } from "@/components/forms/DynamicForms";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -51,7 +52,9 @@ export default function ContactPage() {
               Tip: search &quot;CMR Schools Lalgadi Malakpet&quot; in Google Maps for turn-by-turn directions.
             </p>
           </div>
-          <ContactForm />
+          <Suspense fallback={<div className="h-[420px] animate-pulse bg-white rounded-modal border border-border" />}>
+            <ContactForm />
+          </Suspense>
         </div>
       </section>
 

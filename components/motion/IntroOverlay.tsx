@@ -1,8 +1,14 @@
 "use client";
 
 import { useState, useEffect, useLayoutEffect } from "react";
-import { CinematicIntro } from "./CinematicIntro";
-import { useLenis } from "@studio-freight/react-lenis";
+import dynamic from "next/dynamic";
+
+const CinematicIntro = dynamic(() => import("./CinematicIntro").then(mod => mod.CinematicIntro), { 
+  ssr: false,
+  loading: () => null 
+});
+
+import { useLenis } from "lenis/react";
 
 const STORAGE_KEY = "cmr-cinematic-intro-seen";
 

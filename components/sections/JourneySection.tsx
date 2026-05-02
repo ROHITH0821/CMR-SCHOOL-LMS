@@ -107,6 +107,7 @@ export function JourneySection() {
                     alt={branch.name}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A2463] via-transparent to-transparent opacity-60" />
                 </div>

@@ -4,14 +4,15 @@ import { FacultyProfileView } from "@/components/faculty/FacultyProfileView";
 import { FACULTY, getFacultyBySlug } from "@/lib/faculty-data";
 import { CAMPUS_NAME } from "@/lib/constants";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
   return FACULTY.map((f) => ({ slug: f.slug }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const m = getFacultyBySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const m = getFacultyBySlug(slug);
   if (!m) return { title: "Faculty" };
   return {
     title: `${m.name} | Faculty`,
@@ -23,8 +24,9 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-export default function FacultyProfilePage({ params }: Props) {
-  const member = getFacultyBySlug(params.slug);
+export default async function FacultyProfilePage({ params }: Props) {
+  const { slug } = await params;
+  const member = getFacultyBySlug(slug);
   if (!member) notFound();
 
   return <FacultyProfileView member={member} />;

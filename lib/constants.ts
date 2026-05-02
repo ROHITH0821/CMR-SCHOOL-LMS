@@ -121,6 +121,9 @@ export interface GoogleSheetIds {
   ACHIEVEMENTS: string;
   FACILITIES: string;
   CALENDAR: string;
+  NEWS: string;
+  FAQS: string;
+  FACULTY: string;
 }
 
 export const GOOGLE_SHEET_IDS: GoogleSheetIds = {
@@ -134,4 +137,7 @@ export const GOOGLE_SHEET_IDS: GoogleSheetIds = {
   ACHIEVEMENTS: "REPLACE_WITH_CSV_LINK",
   FACILITIES: "REPLACE_WITH_CSV_LINK",
   CALENDAR: "REPLACE_WITH_CSV_LINK",
+  NEWS: "REPLACE_WITH_CSV_LINK",
+  FAQS: "REPLACE_WITH_CSV_LINK",
+  FACULTY: "REPLACE_WITH_CSV_LINK",
 };

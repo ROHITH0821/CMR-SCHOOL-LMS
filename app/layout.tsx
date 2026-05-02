@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Fraunces, Instrument_Serif, Outfit, JetBrains_Mono } from "next/font/google";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { SchoolJsonLd } from "@/components/json-ld/SchoolJsonLd";
+
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -89,7 +90,9 @@ export default function RootLayout({
             </Script>
           </>
         ) : null}
-        <SiteShell>{children}</SiteShell>
+        <SiteShell>
+{children}
+        </SiteShell>
       </body>
     </html>
   );

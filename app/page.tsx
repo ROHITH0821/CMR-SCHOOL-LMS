@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { IntroOverlay } from "@/components/motion/IntroOverlay";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SafetyTrustStrip } from "@/components/sections/SafetyTrustStrip";
@@ -7,10 +9,12 @@ import { DiscoverCampusSection } from "@/components/sections/DiscoverCampusSecti
 import { FacilitiesGallerySection } from "@/components/sections/FacilitiesGallerySection";
 import { JourneySection } from "@/components/sections/JourneySection";
 import { AboutSnapshotSection } from "@/components/sections/AboutSnapshotSection";
-import { AcademicsHighlightsSection } from "@/components/sections/AcademicsHighlightsSection";
-import { AchievementsMarqueeSection } from "@/components/sections/AchievementsMarqueeSection";
+
+import { AcademicsHighlightsSection, AchievementsMarqueeSection } from "@/components/sections/DynamicSections";
+
 import { MonthlyAchievementsSection } from "@/components/sections/MonthlyAchievementsSection";
 import { WhatsHappeningSection } from "@/components/sections/WhatsHappeningSection";
+import { UpcomingEventsSection } from "@/components/sections/UpcomingEventsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { GalleryPreviewSection } from "@/components/sections/GalleryPreviewSection";
 import { AdmissionsCtaBanner } from "@/components/sections/AdmissionsCtaBanner";
@@ -39,17 +43,33 @@ const getCachedAlbums = unstable_cache(
   { revalidate: 3600, tags: ["albums"] }
 );
 
+const getCachedNews = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.NEWS),
+  ["news"],
+  { revalidate: 3600, tags: ["news"] }
+);
+
+const getCachedEvents = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.CALENDAR),
+  ["events"],
+  { revalidate: 3600, tags: ["events"] }
+);
+
 export default async function HomePage() {
   // Parallel fetch from cache
-  const [facilitiesRes, achievementsRes, albumsRes] = await Promise.allSettled([
+  const [facilitiesRes, achievementsRes, albumsRes, newsRes, eventsRes] = await Promise.allSettled([
     getCachedFacilities(),
     getCachedAchievements(),
     getCachedAlbums(),
+    getCachedNews(),
+    getCachedEvents(),
   ]);
 
   const facilitiesData = facilitiesRes.status === 'fulfilled' ? facilitiesRes.value : [];
   const achievementsData = achievementsRes.status === 'fulfilled' ? achievementsRes.value : [];
   const albumsData = albumsRes.status === 'fulfilled' ? albumsRes.value : [];
+  const newsData = newsRes.status === 'fulfilled' ? newsRes.value : [];
+  const eventsData = eventsRes.status === 'fulfilled' ? eventsRes.value : [];
 
   return (
     <>
@@ -62,10 +82,15 @@ export default async function HomePage() {
       <FacilitiesGallerySection initialData={facilitiesData} />
       <JourneySection />
       <AboutSnapshotSection />
-      <AcademicsHighlightsSection />
-      <AchievementsMarqueeSection />
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50 rounded-3xl mx-auto max-w-7xl" />}>
+        <AcademicsHighlightsSection />
+      </Suspense>
+      <Suspense fallback={<div className="h-40 animate-pulse bg-gray-50" />}>
+        <AchievementsMarqueeSection />
+      </Suspense>
       <MonthlyAchievementsSection initialData={achievementsData} />
-      <WhatsHappeningSection />
+      <UpcomingEventsSection initialData={eventsData} />
+      <WhatsHappeningSection initialData={newsData} />
       {/* <TestimonialsSection /> */}
       <GalleryPreviewSection initialData={albumsData} />
       <AdmissionsCtaBanner />

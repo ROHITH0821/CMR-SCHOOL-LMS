@@ -35,11 +35,19 @@ interface Event {
   desc: string;
 }
 
-export function UpcomingEventsSection() {
-  const [events, setEvents] = useState<Event[]>(STATIC_EVENTS);
-  const [isLoading, setIsLoading] = useState(true);
+interface UpcomingEventsSectionProps {
+  initialData?: Event[];
+}
+
+export function UpcomingEventsSection({ initialData }: UpcomingEventsSectionProps) {
+  const [events, setEvents] = useState<Event[]>(initialData && initialData.length > 0 ? initialData : STATIC_EVENTS);
+  const [isLoading, setIsLoading] = useState(!initialData || initialData.length === 0);
 
   useEffect(() => {
+    // If we already have initialData, don't trigger a client-side fetch unless we want to re-sync.
+    // For now, we skip the fetch if initialData is provided to reduce network calls.
+    if (initialData && initialData.length > 0) return;
+
     async function loadEvents() {
       try {
         const data = await fetchSheetData<Event>(GOOGLE_SHEET_IDS.CALENDAR);
@@ -53,7 +61,7 @@ export function UpcomingEventsSection() {
       }
     }
     loadEvents();
-  }, []);
+  }, [initialData]);
 
   return (
     <section className="section-padding bg-[#FFFFFF]">
@@ -67,10 +75,10 @@ export function UpcomingEventsSection() {
           </div>
         ) : (
           <FadeStagger className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {events.map((e, idx) => (
+            {events.slice(0, 3).map((e, idx) => (
               <FadeStaggerItem key={e.title + idx}>
                 <article className={`flex flex-col sm:flex-row gap-4 rounded-card border border-border bg-white p-4 md:p-5 shadow-soft transition hover:shadow-soft-lg ${
-                  events.length % 2 !== 0 && idx === events.length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
+                  events.slice(0, 3).length % 2 !== 0 && idx === events.slice(0, 3).length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
                 }`}>
                   <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-card bg-[#0A2463] text-center text-white">
                     <span className="font-mono text-2xl font-bold text-[#F5A623]">{e.day}</span>

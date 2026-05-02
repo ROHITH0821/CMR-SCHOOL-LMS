@@ -8,7 +8,12 @@ import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { BackToTop } from "./BackToTop";
-import { GsapScrollInit } from "@/components/motion/GsapScrollInit";
+import dynamic from "next/dynamic";
+
+const GsapScrollInit = dynamic(() => import("@/components/motion/GsapScrollInit").then(mod => mod.GsapScrollInit), {
+  ssr: false,
+  loading: () => null
+});
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
