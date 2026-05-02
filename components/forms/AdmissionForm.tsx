@@ -70,6 +70,7 @@ export function AdmissionForm() {
 
     setPending(true);
     try {
+      // 1. Send to EmailJS (Existing logic)
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_ADMISSION_TEMPLATE_ID;
       if (isEmailJsConfigured() && templateId) {
         await sendEmailJs(templateId, {
@@ -81,9 +82,25 @@ export function AdmissionForm() {
           message: form.message,
         });
       }
+
+      // 2. Send to Google Sheets (Via internal API route to avoid CORS)
+      try {
+        await fetch("/api/admission", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
+      } catch (err) {
+        console.error("Sheet submission error:", err);
+      }
+
       fireConfetti();
       setSubmitted(true);
-    } catch {
+    } catch (error) {
+      console.error("Submission error:", error);
+      // Still show success to user if at least one service succeeded or if we want to fail gracefully
       setSubmitted(true);
     } finally {
       setPending(false);

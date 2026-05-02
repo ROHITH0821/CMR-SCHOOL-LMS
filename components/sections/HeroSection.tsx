@@ -41,10 +41,6 @@ export function HeroSection() {
             <span className="text-[#F5A623]">Next Generation</span>
           </h1>
         </div>
-
-        <p className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.5em] text-white/90 [text-shadow:_0_2px_15px_rgba(0,0,0,0.5)] animate-in fade-in duration-1000 delay-1000 fill-mode-both">
-          Scroll to explore
-        </p>
       </div>
     </section>
   );
