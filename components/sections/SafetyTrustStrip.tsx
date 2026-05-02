@@ -51,6 +51,7 @@ export function SafetyTrustStrip() {
                     alt={item.text}
                     fill
                     className="object-contain mix-blend-multiply"
+                    sizes="(max-width: 768px) 56px, 80px"
                   />
                 </div>
                 <span className="font-display text-[10px] font-bold uppercase tracking-widest text-[#0A2463] sm:text-xs md:text-sm leading-tight max-w-[120px]">

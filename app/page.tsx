@@ -18,13 +18,33 @@ import { AdmissionModal } from "@/components/sections/AdmissionModal";
 
 import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
+import { unstable_cache } from "next/cache";
+
+// Cached data fetchers
+const getCachedFacilities = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES),
+  ["facilities"],
+  { revalidate: 3600, tags: ["facilities"] }
+);
+
+const getCachedAchievements = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ACHIEVEMENTS),
+  ["achievements"],
+  { revalidate: 3600, tags: ["achievements"] }
+);
+
+const getCachedAlbums = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ALBUMS),
+  ["albums"],
+  { revalidate: 3600, tags: ["albums"] }
+);
 
 export default async function HomePage() {
-  // Parallel fetch with error handling
+  // Parallel fetch from cache
   const [facilitiesRes, achievementsRes, albumsRes] = await Promise.allSettled([
-    fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES),
-    fetchSheetData<any>(GOOGLE_SHEET_IDS.ACHIEVEMENTS),
-    fetchSheetData<any>(GOOGLE_SHEET_IDS.ALBUMS),
+    getCachedFacilities(),
+    getCachedAchievements(),
+    getCachedAlbums(),
   ]);
 
   const facilitiesData = facilitiesRes.status === 'fulfilled' ? facilitiesRes.value : [];

@@ -56,8 +56,11 @@ const config: Config = {
         "whatsapp-pulse": "whatsapp-pulse 2s ease-out infinite",
         float: "float 6s ease-in-out infinite",
       },
+      transitionTimingFunction: {
+        quartOut: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 export default config;

@@ -67,7 +67,7 @@ function FacultyCard({
     <motion.div layout className={`relative ${large ? "min-h-[360px]" : "min-h-[320px]"}`}>
       <Link
         href={`/faculty/${f.slug}`}
-        className="group relative block h-full overflow-hidden rounded-card border border-border bg-white shadow-soft transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2 hover:border-[#F5A623]/35 hover:shadow-[0_22px_50px_-12px_rgba(15,23,42,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A2463]"
+        className="group relative block h-full overflow-hidden rounded-card border border-border bg-white shadow-soft transition-all duration-500 ease-quartOut hover:-translate-y-2 hover:border-[#F5A623]/35 hover:shadow-[0_22px_50px_-12px_rgba(15,23,42,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A2463]"
       >
         <div className={`relative ${imgH} overflow-hidden`}>
           <Image
