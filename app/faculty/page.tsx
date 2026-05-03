@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const getCachedFaculty = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FACULTY),
   ["faculty"],
-  { revalidate: 3600, tags: ["faculty"] }
+  { revalidate: 86400, tags: ["faculty"] }
 );
 
 export default async function FacultyPage() {

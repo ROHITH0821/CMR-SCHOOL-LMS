@@ -102,6 +102,7 @@ export const NAV_LINKS: NavItem[] = [
 export const FOOTER_QUICK = [
   { href: "/about", label: "About Us" },
   { href: "/academics", label: "Academics" },
+  { href: "/facilities", label: "Facilities" },
   { href: "/admissions", label: "Admissions" },
   { href: "/faculty", label: "Faculty" },
   { href: "/blog", label: "Blog" },

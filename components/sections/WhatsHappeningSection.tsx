@@ -63,7 +63,7 @@ export function WhatsHappeningSection({ initialData }: WhatsHappeningSectionProp
           </div>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 rounded-full border border-[#0A2463]/20 bg-white px-5 py-2.5 text-sm font-semibold text-[#0A2463] shadow-sm transition hover:border-[#0DB6B5] hover:bg-[#0DB6B5]/5"
+            className="hidden md:inline-flex items-center gap-2 rounded-full border border-[#0A2463]/20 bg-white px-5 py-2.5 text-sm font-semibold text-[#0A2463] shadow-sm transition hover:border-[#0DB6B5] hover:bg-[#0DB6B5]/5"
           >
             View all insights
             <ArrowRight className="h-4 w-4" aria-hidden />
@@ -108,6 +108,17 @@ export function WhatsHappeningSection({ initialData }: WhatsHappeningSectionProp
               </Link>
             </motion.article>
           ))}
+        </div>
+
+        {/* Mobile CTA */}
+        <div className="mt-10 flex justify-center md:hidden">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 rounded-full border border-[#0A2463]/20 bg-white px-6 py-3 text-sm font-bold text-[#0A2463] shadow-sm transition active:scale-95"
+          >
+            View all insights
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
         </div>
       </div>
     </section>

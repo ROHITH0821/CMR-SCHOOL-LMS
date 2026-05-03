@@ -29,25 +29,25 @@ import { unstable_cache } from "next/cache";
 const getCachedFacilities = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES),
   ["facilities-prod"],
-  { revalidate: 3600, tags: ["facilities"] }
+  { revalidate: 86400, tags: ["facilities"] }
 );
 
 const getCachedAchievements = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ACHIEVEMENTS),
   ["achievements"],
-  { revalidate: 3600, tags: ["achievements"] }
+  { revalidate: 86400, tags: ["achievements"] }
 );
 
 const getCachedAlbums = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ALBUMS),
   ["albums"],
-  { revalidate: 3600, tags: ["albums"] }
+  { revalidate: 86400, tags: ["albums"] }
 );
 
 const getCachedEvents = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.CALENDAR),
   ["events"],
-  { revalidate: 3600, tags: ["events"] }
+  { revalidate: 86400, tags: ["events"] }
 );
 
 export default async function HomePage() {
@@ -84,7 +84,7 @@ export default async function HomePage() {
       <AdmissionSpotlight />
       <TrustAffiliationsStrip />
       <DiscoverCampusSection />
-      <FacilitiesGallerySection initialData={facilitiesData} />
+      <FacilitiesGallerySection initialData={facilitiesData} limit={6} showViewAll={true} />
       <JourneySection />
       <AboutSnapshotSection />
       <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50 rounded-3xl mx-auto max-w-7xl" />}>

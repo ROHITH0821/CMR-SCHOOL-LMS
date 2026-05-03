@@ -135,9 +135,11 @@ export function StatsCounterSection() {
         </div>
 
         {/* Stats Grid */}
-        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-20 md:mb-32">
+        <div ref={statsRef} className="flex flex-wrap justify-center gap-y-8 gap-x-4 lg:grid lg:grid-cols-5 mb-20 md:mb-32">
           {stats.map((s) => (
-            <StatBlock key={s.label} {...s} active={inView} />
+            <div key={s.label} className="w-[calc(50%-1rem)] sm:w-[calc(33.333%-1rem)] lg:w-auto">
+              <StatBlock {...s} active={inView} />
+            </div>
           ))}
         </div>
 

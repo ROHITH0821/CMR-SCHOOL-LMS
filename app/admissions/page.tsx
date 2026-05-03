@@ -24,7 +24,7 @@ const STEPS = [
 const getCachedFaqs = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FAQS),
   ["faqs"],
-  { revalidate: 3600, tags: ["faqs"] }
+  { revalidate: 86400, tags: ["faqs"] }
 );
 
 export default async function AdmissionsPage() {

@@ -8,9 +8,16 @@ export const metadata = {
 
 import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
+import { unstable_cache } from "next/cache";
+
+const getCachedGallery = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.GALLERY),
+  ["gallery"],
+  { revalidate: 86400, tags: ["gallery"] }
+);
 
 export default async function GalleryPage() {
-  const galleryData = await fetchSheetData<any>(GOOGLE_SHEET_IDS.GALLERY);
+  const galleryData = await getCachedGallery();
 
   return (
     <SiteShell>

@@ -131,7 +131,7 @@ export function NewsAndEventsSection() {
           </div>
           <Link 
             href="/blog" 
-            className="group flex items-center gap-3 font-semibold text-sm tracking-widest uppercase text-[#0A2463] hover:text-[#F5A623] transition-colors pb-2"
+            className="hidden md:flex group items-center gap-3 font-semibold text-sm tracking-widest uppercase text-[#0A2463] hover:text-[#F5A623] transition-colors pb-2"
           >
             View all insights
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
@@ -238,6 +238,17 @@ export function NewsAndEventsSection() {
             </div>
           </div>
 
+        </div>
+
+        {/* Mobile Blog CTA */}
+        <div className="mt-12 flex justify-center lg:hidden">
+          <Link 
+            href="/blog" 
+            className="group flex items-center gap-3 font-black text-xs tracking-[0.2em] uppercase text-[#0A2463] border-b-2 border-[#F5A623] pb-2 transition-all hover:gap-5"
+          >
+            View all insights
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+          </Link>
         </div>
       </div>
     </section>

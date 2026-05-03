@@ -43,7 +43,6 @@ const branches = [
   },
 ];
 
-const VISIBLE = 3;        // cards shown at once on desktop
 const INTERVAL_MS = 3000; // auto-advance every 3s
 
 function StatItem({
@@ -85,7 +84,19 @@ export function JourneySection() {
   // `startIndex` = index of the LEFT-MOST visible card
   const [startIndex, setStartIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1); // 1 = forward (→), -1 = backward
+  const [visibleCount, setVisibleCount] = useState(3);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      if (window.innerWidth < 640) setVisibleCount(1);
+      else if (window.innerWidth < 1024) setVisibleCount(2);
+      else setVisibleCount(3);
+    };
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount);
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, []);
 
   const total = branches.length;
 
@@ -100,10 +111,11 @@ export function JourneySection() {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
-  const visibleCards = getWindow(branches, startIndex, VISIBLE);
+  const visibleCards = getWindow(branches, startIndex, visibleCount);
 
-  // Dot indicators: one dot per branch, highlight the centre card's index
-  const centreIndex = (startIndex + 1) % total;
+  // Dot indicators: highlight the active card's index
+  // On mobile (1 card), it's startIndex. On desktop (3 cards), it's the middle one.
+  const centreIndex = visibleCount === 1 ? startIndex : (startIndex + 1) % total;
 
   return (
     <section
@@ -138,9 +150,11 @@ export function JourneySection() {
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5 mb-32 lg:mb-48">
+        <div className="flex flex-wrap justify-center gap-y-12 gap-x-4 md:grid md:grid-cols-3 lg:grid-cols-5 mb-24 lg:mb-40">
           {stats.map((stat, idx) => (
-            <StatItem key={idx} {...stat} active={inView} />
+            <div key={idx} className="w-[calc(33.333%-1rem)] md:w-auto min-w-[140px]">
+              <StatItem {...stat} active={inView} />
+            </div>
           ))}
         </div>
       </div>
@@ -181,8 +195,14 @@ export function JourneySection() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: direction > 0 ? -120 : 120 }}
                     transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="relative flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer h-[350px] md:h-[450px] lg:h-[500px]"
-                    style={{ width: "calc((100% - 2 * 1.5rem) / 3)" }}
+                    className="relative flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer h-[320px] md:h-[400px] lg:h-[450px]"
+                    style={{ 
+                      width: visibleCount === 1 
+                        ? "100%" 
+                        : visibleCount === 2
+                          ? "calc((100% - 1rem) / 2)"
+                          : "calc((100% - 2 * 1.5rem) / 3)"
+                    }}
                   >
                     <Image
                       src={branch.image}

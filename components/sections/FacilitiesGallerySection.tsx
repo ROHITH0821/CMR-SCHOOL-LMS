@@ -25,8 +25,26 @@ const ICON_MAP: Record<string, any> = {
 
 
 
-export function FacilitiesGallerySection({ initialData }: { initialData?: Facility[] }) {
-  const [facilities, setFacilities] = useState<Facility[]>(initialData || []);
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+export function FacilitiesGallerySection({ 
+  initialData, 
+  limit,
+  showViewAll = false
+}: { 
+  initialData?: Facility[], 
+  limit?: number,
+  showViewAll?: boolean
+}) {
+  const processFacilities = (data: Facility[]) => {
+    return data.map(item => ({
+      ...item,
+      images: typeof item.images === 'string' ? (item.images as string).split(',').map((s: string) => s.trim()) : item.images
+    }));
+  };
+
+  const [facilities, setFacilities] = useState<Facility[]>(initialData ? processFacilities(initialData) : []);
   const [isLoading, setIsLoading] = useState(!initialData);
   const [activeFacility, setActiveFacility] = useState<Facility | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -35,7 +53,7 @@ export function FacilitiesGallerySection({ initialData }: { initialData?: Facili
     // If initialData is provided but empty, it might mean the server fetch failed or returned no rows.
     // If initialData is undefined, we fetch on client.
     if (initialData !== undefined) {
-      setFacilities(initialData);
+      setFacilities(processFacilities(initialData));
       setIsLoading(false);
       return;
     }
@@ -44,10 +62,7 @@ export function FacilitiesGallerySection({ initialData }: { initialData?: Facili
       try {
         const data = await fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES);
         if (data && data.length > 0) {
-          setFacilities(data.map(item => ({
-            ...item,
-            images: typeof item.images === 'string' ? item.images.split(',').map((s: string) => s.trim()) : item.images
-          })));
+          setFacilities(processFacilities(data));
         } else {
           setFacilities([]);
         }
@@ -98,8 +113,8 @@ export function FacilitiesGallerySection({ initialData }: { initialData?: Facili
             <p className="text-sm font-bold uppercase tracking-widest">Loading Facilities...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {facilities.map((facility, idx) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            {(limit ? facilities.slice(0, limit) : facilities).map((facility, idx) => {
               const hasTitle = !!facility.title;
               const hasImages = facility.images && (Array.isArray(facility.images) ? facility.images.length > 0 : !!facility.images);
               
@@ -115,9 +130,7 @@ export function FacilitiesGallerySection({ initialData }: { initialData?: Facili
                 <motion.div
                   key={facility.id || idx}
                   whileHover={{ y: -10 }}
-                  className={`group relative cursor-pointer overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#fcfcfd] border border-gray-100 p-4 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)] ${
-                    facilities.length % 2 !== 0 && idx === facilities.length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
-                  }`}
+                  className="group relative cursor-pointer overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#fcfcfd] border border-gray-100 p-4 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)]"
                   onClick={() => openLightbox(facility)}
                 >
                   <div className="flex items-center gap-5 mb-6">
@@ -144,6 +157,18 @@ export function FacilitiesGallerySection({ initialData }: { initialData?: Facili
                 </motion.div>
               );
             })}
+          </div>
+        )}
+
+        {showViewAll && facilities.length > (limit || 0) && (
+          <div className="mt-16 text-center">
+            <Link 
+              href="/facilities"
+              className="inline-flex items-center gap-3 bg-[#0A2463] text-white px-10 py-5 rounded-2xl font-bold transition-all hover:bg-[#F5A623] hover:gap-5 group shadow-xl shadow-[#0A2463]/10"
+            >
+              Explore All Facilities
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         )}
       </div>
