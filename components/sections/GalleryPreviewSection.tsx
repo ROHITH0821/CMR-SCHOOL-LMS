@@ -23,31 +23,17 @@ export function GalleryPreviewSection({ initialData }: { initialData?: GalleryAl
   const reduceMotion = useReducedMotion();
   const [category, setCategory] = useState<GalleryFilterCategory>("All");
   const [year, setYear] = useState<GalleryYearFilter>("All");
-  const [albums, setAlbums] = useState<GalleryAlbum[]>(initialData || []);
-  const [isLoading, setIsLoading] = useState(!initialData && albums.length === 0);
-
-  useEffect(() => {
-    if (initialData && initialData.length > 0) return;
-    async function loadAlbums() {
-      try {
-        const data = await fetchSheetData<GalleryAlbum>(GOOGLE_SHEET_IDS.ALBUMS);
-        if (data.length > 0) {
-          setAlbums(data.map(item => ({
-            ...item,
-            year: Number(item.year),
-            photos: Number(item.photos)
-          })));
-        } else {
-          setAlbums(GALLERY_ALBUMS);
-        }
-      } catch (error) {
-        setAlbums(GALLERY_ALBUMS);
-      } finally {
-        setIsLoading(false);
-      }
+  
+  const albums = useMemo(() => {
+    if (initialData && initialData.length > 0) {
+      return initialData.map(item => ({
+        ...item,
+        year: Number(item.year),
+        photos: Number(item.photos)
+      }));
     }
-    loadAlbums();
-  }, []);
+    return GALLERY_ALBUMS;
+  }, [initialData]);
 
   const filtered = useMemo(() => {
     return albums.filter((item) => {
@@ -107,12 +93,7 @@ export function GalleryPreviewSection({ initialData }: { initialData?: GalleryAl
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-24 text-gray-400">
-          <Loader2 className="w-8 h-8 animate-spin mb-4" />
-          <p className="text-xs font-bold uppercase tracking-widest">Syncing Gallery...</p>
-        </div>
-      ) : filtered.length === 0 ? (
+      {filtered.length === 0 ? (
         <p className="px-4 pt-8 text-center text-sm text-neutral-500">No albums match. Adjust filters.</p>
       ) : (
         <div className="pt-8 md:pt-10">
@@ -124,7 +105,6 @@ export function GalleryPreviewSection({ initialData }: { initialData?: GalleryAl
           )}
         </div>
       )}
-
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}

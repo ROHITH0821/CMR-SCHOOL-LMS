@@ -31,37 +31,37 @@ const CATEGORY_COLORS: Record<EventCategory, string> = {
 export function AcademicCalendarSection({ initialData }: { initialData?: SchoolEvent[] }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<SchoolEvent | null>(null);
-  const [events, setEvents] = useState<SchoolEvent[]>(initialData || SCHOOL_EVENTS);
-  const [isLoading, setIsLoading] = useState(!initialData);
-
-  useEffect(() => {
-    if (initialData) return;
-    async function loadEvents() {
-      try {
-        const data = await fetchSheetData<SchoolEvent>(GOOGLE_SHEET_IDS.CALENDAR);
-        if (data && data.length > 0) {
-          setEvents(data);
-        }
-      } catch (error) {
-        console.error("Failed to load calendar events:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadEvents();
-  }, []);
+  
+  const events = useMemo(() => {
+    const raw = initialData && initialData.length > 0 ? initialData : SCHOOL_EVENTS;
+    return raw.filter(e => e && typeof e.date === 'string' && e.date.includes('-'));
+  }, [initialData]);
 
   const nextMonth = () => setCurrentMonth(addMonths(currentMonth, 1));
   const prevMonth = () => setCurrentMonth(subMonths(currentMonth, 1));
 
   const days = useMemo(() => {
-    const start = startOfWeek(startOfMonth(currentMonth));
-    const end = endOfWeek(endOfMonth(currentMonth));
-    return eachDayOfInterval({ start, end });
+    try {
+      const start = startOfWeek(startOfMonth(currentMonth));
+      const end = endOfWeek(endOfMonth(currentMonth));
+      return eachDayOfInterval({ start, end });
+    } catch (e) {
+      console.error("Error generating calendar days:", e);
+      return [];
+    }
   }, [currentMonth]);
 
   const getEventsForDay = (day: Date) => {
-    return events.filter(event => isSameDay(parseISO(event.date), day));
+    if (!day) return [];
+    return events.filter(event => {
+      if (!event || !event.date || typeof event.date !== 'string') return false;
+      try {
+        const eventDate = parseISO(event.date);
+        return isSameDay(eventDate, day);
+      } catch (e) {
+        return false;
+      }
+    });
   };
 
   return (
@@ -133,14 +133,14 @@ export function AcademicCalendarSection({ initialData }: { initialData?: SchoolE
                   <div className="mt-2 space-y-1">
                     {dayEvents.map(event => (
                       <motion.div
-                        key={event.id}
+                        key={event.id || `${event.title}-${idx}`}
                         initial={{ opacity: 0, x: -5 }}
                         animate={{ opacity: 1, x: 0 }}
                         onClick={() => setSelectedEvent(event)}
                         className="cursor-pointer p-1.5 rounded-lg border border-transparent hover:border-white hover:shadow-sm transition-all"
-                        style={{ backgroundColor: `${CATEGORY_COLORS[event.category]}15` }}
+                        style={{ backgroundColor: `${CATEGORY_COLORS[event.category || 'Event']}15` }}
                       >
-                        <p className="text-[9px] md:text-[10px] font-bold truncate" style={{ color: CATEGORY_COLORS[event.category] }}>
+                        <p className="text-[9px] md:text-[10px] font-bold truncate" style={{ color: CATEGORY_COLORS[event.category || 'Event'] }}>
                           {event.title}
                         </p>
                       </motion.div>

@@ -19,7 +19,6 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { GalleryPreviewSection } from "@/components/sections/GalleryPreviewSection";
 import { AdmissionsCtaBanner } from "@/components/sections/AdmissionsCtaBanner";
 import { AdmissionModal } from "@/components/sections/AdmissionModal";
-import { blogPosts } from "@/lib/blog-data";
 
 import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
@@ -28,54 +27,65 @@ import { unstable_cache } from "next/cache";
 // Cached data fetchers
 const getCachedFacilities = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES),
-  ["facilities-prod"],
-  { revalidate: 86400, tags: ["facilities"] }
+  ["facilities"],
+  { revalidate: 3600, tags: ["facilities"] }
 );
 
 const getCachedAchievements = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ACHIEVEMENTS),
   ["achievements"],
-  { revalidate: 86400, tags: ["achievements"] }
+  { revalidate: 3600, tags: ["achievements"] }
 );
 
 const getCachedAlbums = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.ALBUMS),
   ["albums"],
-  { revalidate: 86400, tags: ["albums"] }
+  { revalidate: 3600, tags: ["albums"] }
+);
+
+const getCachedNews = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.NEWS),
+  ["news"],
+  { revalidate: 3600, tags: ["news"] }
 );
 
 const getCachedEvents = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.CALENDAR),
   ["events"],
-  { revalidate: 86400, tags: ["events"] }
+  { revalidate: 3600, tags: ["events"] }
 );
 
+export const dynamic = "force-static";
+export const revalidate = 3600; // 1 hour
+
+// --- Section Wrappers for Streaming ---
+
+async function FacilitiesWrapper() {
+  const data = await getCachedFacilities();
+  return <FacilitiesGallerySection initialData={data} />;
+}
+
+async function AchievementsWrapper() {
+  const data = await getCachedAchievements();
+  return <MonthlyAchievementsSection initialData={data} />;
+}
+
+async function EventsWrapper() {
+  const data = await getCachedEvents();
+  return <UpcomingEventsSection initialData={data} />;
+}
+
+async function NewsWrapper() {
+  const data = await getCachedNews();
+  return <WhatsHappeningSection initialData={data} />;
+}
+
+async function GalleryWrapper() {
+  const data = await getCachedAlbums();
+  return <GalleryPreviewSection initialData={data} />;
+}
+
 export default async function HomePage() {
-  // Parallel fetch from cache
-  const [facilitiesRes, achievementsRes, albumsRes, eventsRes] = await Promise.allSettled([
-    getCachedFacilities(),
-    getCachedAchievements(),
-    getCachedAlbums(),
-    getCachedEvents(),
-  ]);
-  
-  const facilitiesData = facilitiesRes.status === 'fulfilled' ? facilitiesRes.value : [];
-  const achievementsData = achievementsRes.status === 'fulfilled' ? achievementsRes.value : [];
-  const albumsData = albumsRes.status === 'fulfilled' ? albumsRes.value : [];
-  const eventsData = eventsRes.status === 'fulfilled' ? eventsRes.value : [];
-
-  const latestBlogPosts = Object.values(blogPosts).slice(0, 3).map(post => ({
-    slug: post.slug,
-    title: post.title,
-    excerpt: post.excerpt
-      .replace(/<[^>]*>/g, '')
-      .replace(/\[&hellip;\]|\[\.\.\.\]/g, '')
-      .trim()
-      .slice(0, 120) + '...',
-    date: post.date,
-    img: post.img
-  }));
-
   return (
     <>
       <IntroOverlay />
@@ -84,20 +94,38 @@ export default async function HomePage() {
       <AdmissionSpotlight />
       <TrustAffiliationsStrip />
       <DiscoverCampusSection />
-      <FacilitiesGallerySection initialData={facilitiesData} limit={6} showViewAll={true} />
+      
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50 rounded-3xl mx-auto max-w-7xl" />}>
+        <FacilitiesWrapper />
+      </Suspense>
+
       <JourneySection />
       <AboutSnapshotSection />
+      
       <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50 rounded-3xl mx-auto max-w-7xl" />}>
         <AcademicsHighlightsSection />
       </Suspense>
+
       <Suspense fallback={<div className="h-40 animate-pulse bg-gray-50" />}>
         <AchievementsMarqueeSection />
       </Suspense>
-      <MonthlyAchievementsSection initialData={achievementsData} />
-      <UpcomingEventsSection initialData={eventsData} />
-      <WhatsHappeningSection initialData={latestBlogPosts} />
-      {/* <TestimonialsSection /> */}
-      <GalleryPreviewSection initialData={albumsData} />
+
+      <Suspense fallback={<div className="h-[500px] animate-pulse bg-white rounded-3xl mx-auto max-w-7xl" />}>
+        <AchievementsWrapper />
+      </Suspense>
+
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-50" />}>
+        <EventsWrapper />
+      </Suspense>
+
+      <Suspense fallback={<div className="h-96 animate-pulse bg-gray-50" />}>
+        <NewsWrapper />
+      </Suspense>
+
+      <Suspense fallback={<div className="h-[600px] animate-pulse bg-gray-50" />}>
+        <GalleryWrapper />
+      </Suspense>
+
       <AdmissionsCtaBanner />
       <AdmissionModal />
     </>

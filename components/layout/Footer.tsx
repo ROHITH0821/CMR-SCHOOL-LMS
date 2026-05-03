@@ -100,24 +100,24 @@ export function Footer() {
         </div>
 
         {/* MIDDLE PHASE: Deep Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 py-20">
           <div className="col-span-1">
             <h5 className="font-display text-[#0DB6B5] font-black text-xs tracking-[0.3em] uppercase mb-8">Academics</h5>
             <ul className="space-y-4">
-              <li><Link href="/academics" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Primary Wing</Link></li>
-              <li><Link href="/academics" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Middle School</Link></li>
-              <li><Link href="/academics" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Secondary School</Link></li>
-              <li><Link href="/academics#calendar" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Academic Calendar</Link></li>
-              <li><Link href="/academics" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Olympiad Prep</Link></li>
+              <li><Link href="/academics/curriculum" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Curriculum</Link></li>
+              <li><Link href="/academics/iit-foundation" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">IIT Foundation</Link></li>
+              <li><Link href="/academics/labs" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Laboratories</Link></li>
+              <li><Link href="/academics/competitions" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Competitions</Link></li>
+              <li><Link href="/co-curricular" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Co-Curricular</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
             <h5 className="font-display text-[#0DB6B5] font-black text-xs tracking-[0.3em] uppercase mb-8">Campus</h5>
             <ul className="space-y-4">
-              <li><Link href="/gallery" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Infrastructure</Link></li>
-              <li><Link href="/events" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Laboratories</Link></li>
-              <li><Link href="/faculty" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Library & IR</Link></li>
-              <li><Link href="/admissions" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Sports Clinics</Link></li>
+              <li><Link href="/about/features" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Salient Features</Link></li>
+              <li><Link href="/about/clubs" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Student Clubs</Link></li>
+              <li><Link href="/about/values" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Core Values</Link></li>
+              <li><Link href="/about/gallery" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Infrastructure</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
@@ -125,20 +125,18 @@ export function Footer() {
             <ul className="space-y-4">
               <li><Link href="/admissions" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Policy & FAQ</Link></li>
               <li><Link href="/admissions#apply" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Admission Enquiry</Link></li>
-              <li><Link href="/admissions" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Apply Online</Link></li>
-              <li><Link href="/portal" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Entrance Tests</Link></li>
+              <li><Link href="/contact" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Contact Us</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
             <h5 className="font-display text-[#0DB6B5] font-black text-xs tracking-[0.3em] uppercase mb-8">Community</h5>
             <ul className="space-y-4">
-              <li><Link href="/blog" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Principal's Blog</Link></li>
-              <li><Link href="/blog" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Blog & Insights</Link></li>
-              <li><Link href="/achievements" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Hall of Fame</Link></li>
-              <li><Link href="/gallery" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Alumni Network</Link></li>
+              <li><Link href="/about/principal-message" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Principal's Desk</Link></li>
+              <li><Link href="/media" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">News & Media</Link></li>
+              <li><Link href="/about" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">About Us</Link></li>
             </ul>
           </div>
-          <div className="col-span-2 md:col-span-1">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1">
             <h5 className="font-display text-[#0DB6B5] font-black text-xs tracking-[0.3em] uppercase mb-8">Legal</h5>
             <ul className="space-y-4">
               <li><Link href="#" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Privacy Policy</Link></li>

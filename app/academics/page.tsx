@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { ProgramAccordion } from "@/components/academics/ProgramAccordion";
 import { Button } from "@/components/ui/Button";
 import { AcademicCalendarSection } from "@/components/sections/AcademicCalendarSection";
+import { fetchSheetData } from "@/lib/google-sheets";
+import { GOOGLE_SHEET_IDS } from "@/lib/constants";
+import type { SchoolEvent } from "@/lib/calendar-data";
 
 export const metadata: Metadata = {
   title: "Academics",
@@ -17,12 +20,19 @@ const infra = [
   { title: "Smart classrooms", icon: "📺" },
 ];
 
-import { fetchSheetData } from "@/lib/google-sheets";
-import { GOOGLE_SHEET_IDS } from "@/lib/constants";
-import type { SchoolEvent } from "@/lib/calendar-data";
+import { unstable_cache } from "next/cache";
+
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+const getCachedCalendar = unstable_cache(
+  async () => fetchSheetData<SchoolEvent>(GOOGLE_SHEET_IDS.CALENDAR),
+  ["calendar"],
+  { revalidate: 3600, tags: ["calendar"] }
+);
 
 export default async function AcademicsPage() {
-  const calendarData = await fetchSheetData<SchoolEvent>(GOOGLE_SHEET_IDS.CALENDAR);
+  const calendarData = await getCachedCalendar();
 
   return (
     <div className="bg-white">
@@ -82,7 +92,7 @@ export default async function AcademicsPage() {
       </section>
 
       <section id="calendar" className="scroll-mt-28">
-        <AcademicCalendarSection initialData={calendarData} />
+      <AcademicCalendarSection initialData={calendarData} />
         <div className="container-custom pb-24 text-center">
           <p className="text-textSecondary mb-6">Need the full schedule for offline reference?</p>
           <Button href="#" variant="outlineDark" size="lg">

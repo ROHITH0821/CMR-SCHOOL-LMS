@@ -6,6 +6,7 @@ export const metadata = {
   description: "Explore the vibrant life across our CMR campuses through our photo and video gallery.",
 };
 
+import { unstable_cache } from "next/cache";
 import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
 import { unstable_cache } from "next/cache";
@@ -14,6 +15,15 @@ const getCachedGallery = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.GALLERY),
   ["gallery"],
   { revalidate: 86400, tags: ["gallery"] }
+);
+
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+const getCachedGallery = unstable_cache(
+  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.GALLERY),
+  ["gallery"],
+  { revalidate: 3600, tags: ["gallery"] }
 );
 
 export default async function GalleryPage() {

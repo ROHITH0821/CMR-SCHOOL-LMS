@@ -24,9 +24,21 @@ export function AdmissionSpotlight() {
           </p>
         </div>
         <div className="flex shrink-0 gap-4">
-          <Button href="/admissions" variant="gold" size="lg" className="rounded-full shadow-lg">
-            Apply Now
-          </Button>
+          <motion.div
+            animate={{ 
+              scale: [1, 1.05, 1],
+              filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          >
+            <Button href="/admissions" variant="gold" size="lg" className="rounded-full shadow-lg">
+              Apply Now
+            </Button>
+          </motion.div>
           <Button href="/contact" variant="outlineDark" size="lg" className="rounded-full">
             Inquire Today
           </Button>

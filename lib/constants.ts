@@ -66,33 +66,30 @@ export const NAV_LINKS: NavItem[] = [
     href: "/about",
     label: "About",
     dropdown: [
-      { href: "/about#vision-mission", label: "Vision & mission" },
-      { href: "/about#principal-message", label: "Principal's message" },
-      { href: "/about#journey", label: "Our journey" },
-      { href: "/about#leadership", label: "Leadership" },
+      { href: "/about", label: "About School" },
+      { href: "/about/principal-message", label: "Principal's Message" },
+      { href: "/about/features", label: "Salient Features" },
+      { href: "/about/values", label: "Values" },
+      { href: "/about/clubs", label: "Clubs" },
     ],
   },
   {
-    href: "/academics",
+    href: "/academics/curriculum",
     label: "Academics",
     dropdown: [
-      { href: "/curriculum", label: "Our curriculum" },
-      { href: "/academics#programs", label: "Programs" },
-      { href: "/academics#curriculum", label: "Curriculum Highlights" },
-      { href: "/academics#infrastructure", label: "Infrastructure" },
-      { href: "/academics#calendar", label: "Academic calendar" },
+      { href: "/academics/curriculum", label: "Curriculum" },
+      { href: "/academics/iit-foundation", label: "IIT Foundation" },
+      { href: "/academics/labs", label: "Labs" },
+      { href: "/academics/competitions", label: "Competitions" },
     ],
   },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/careers", label: "Careers" },
+  { href: "/co-curricular", label: "Co-Curricular" },
+  { href: "/about/gallery", label: "Gallery" },
   {
     href: "/admissions",
     label: "Admissions",
     dropdown: [
-      { href: "/admissions#eligibility", label: "Eligibility" },
-      { href: "/admissions#process", label: "Admission process" },
-      { href: "/admissions#apply", label: "Apply / enquiry" },
-      { href: "/admissions#apply", label: "Enquiry" },
+      { href: "/admissions#apply", label: "Apply / Enquiry" },
       { href: "/admissions#faq", label: "FAQs" },
     ],
   },
@@ -101,12 +98,11 @@ export const NAV_LINKS: NavItem[] = [
 
 export const FOOTER_QUICK = [
   { href: "/about", label: "About Us" },
-  { href: "/academics", label: "Academics" },
-  { href: "/facilities", label: "Facilities" },
+  { href: "/academics/curriculum", label: "Academics" },
+  { href: "/co-curricular", label: "Co-Curricular" },
   { href: "/admissions", label: "Admissions" },
-  { href: "/faculty", label: "Faculty" },
-  { href: "/blog", label: "Blog" },
-  { href: "/portal", label: "Parent Portal" },
+  { href: "/about/gallery", label: "Gallery" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 export const ANNOUNCEMENTS = [
@@ -122,7 +118,7 @@ export interface GoogleSheetIds {
   ACHIEVEMENTS: string;
   FACILITIES: string;
   CALENDAR: string;
-
+  NEWS: string;
   FAQS: string;
   FACULTY: string;
 }
@@ -130,15 +126,16 @@ export interface GoogleSheetIds {
 export const GOOGLE_SHEET_IDS: GoogleSheetIds = {
   // Main Gallery Page
   GALLERY: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=0&single=true&output=csv",
-  
-  // Home Page Bento Albums
-  ALBUMS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=536318328&single=true&output=csv",
-  
-  // Other Sections (User to replace with their published CSV links)
-  ACHIEVEMENTS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=418880037&single=true&output=csv",
-  FACILITIES: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=1268633031&single=true&output=csv",
-  CALENDAR: "REPLACE_WITH_CSV_LINK",
 
+  // Home Page Bento Albums
+  ALBUMS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?gid=438455533&single=true&output=csv",
+
+  // Other Sections (User to replace with their published CSV links)
+  ACHIEVEMENTS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?output=csv",
+  FACILITIES: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?gid=1248382523&single=true&output=csv",
+  CALENDAR: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?gid=1328060838&single=true&output=csv",
+  NEWS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?gid=818070186&single=true&output=csv",
   FAQS: "REPLACE_WITH_CSV_LINK",
-  FACULTY: "REPLACE_WITH_CSV_LINK",
+  FACULTY: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTbL71Gd0aoSu7IjhZAmInxnV1VUvEmTHb6rM7IINr-n2dibyvMqx3CZ4zXjHceVaAHi7v2XRC5HRmE/pub?gid=378969017&single=true&output=csv",
 };
+

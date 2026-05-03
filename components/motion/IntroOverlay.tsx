@@ -14,7 +14,7 @@ const STORAGE_KEY = "cmr-cinematic-intro-seen";
 
 function markIntroSeen() {
   try {
-    sessionStorage.setItem(STORAGE_KEY, "1");
+    localStorage.setItem(STORAGE_KEY, "1");
   } catch {
     // private mode / quota
   }
@@ -26,7 +26,7 @@ export function IntroOverlay() {
 
   useLayoutEffect(() => {
     try {
-      if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+      if (localStorage.getItem(STORAGE_KEY) === "1") {
         setShow(false);
       }
     } catch {

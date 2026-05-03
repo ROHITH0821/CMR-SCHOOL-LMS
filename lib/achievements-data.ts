@@ -16,6 +16,7 @@ export interface Achievement {
   academicYear: string; // e.g., "2025-26"
   branch: BranchName;
   image?: string;
+  link?: string; // Optional link for more details
 }
 
 export const ACHIEVEMENTS_DATA: Achievement[] = [
@@ -27,7 +28,8 @@ export const ACHIEVEMENTS_DATA: Achievement[] = [
     year: 2026,
     academicYear: "2025-26",
     branch: "Lalgadi Malakpet",
-    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800"
+    image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=800",
+    link: "/achievements"
   },
   {
     id: "a2",
@@ -37,7 +39,8 @@ export const ACHIEVEMENTS_DATA: Achievement[] = [
     year: 2026,
     academicYear: "2025-26",
     branch: "Kompally",
-    image: "https://images.unsplash.com/photo-1529692236671-f1f6e94d7b27?q=80&w=800"
+    image: "https://images.unsplash.com/photo-1529692236671-f1f6e94d7b27?q=80&w=800",
+    link: "/achievements"
   },
   {
     id: "a3",
@@ -47,7 +50,8 @@ export const ACHIEVEMENTS_DATA: Achievement[] = [
     year: 2026,
     academicYear: "2025-26",
     branch: "Lalgadi Malakpet",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800"
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800",
+    link: "/achievements"
   },
   {
     id: "a4",
@@ -57,7 +61,8 @@ export const ACHIEVEMENTS_DATA: Achievement[] = [
     year: 2026,
     academicYear: "2025-26",
     branch: "Suraram",
-    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800"
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800",
+    link: "/achievements"
   },
   {
     id: "a5",
@@ -67,6 +72,7 @@ export const ACHIEVEMENTS_DATA: Achievement[] = [
     year: 2026,
     academicYear: "2025-26",
     branch: "Lalgadi Malakpet",
-    image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800"
+    image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=800",
+    link: "/achievements"
   },
 ];

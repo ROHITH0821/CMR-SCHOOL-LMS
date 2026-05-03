@@ -45,12 +45,25 @@ export function AnnouncementBar() {
               </div>
 
               <div className="flex items-center gap-6">
-                <div 
-                  className="flex items-center gap-3 px-8 py-3 bg-[#FFD700] text-[#0A2463] font-black text-xs tracking-[0.2em] uppercase rounded-xl transition-all transform group-hover:scale-105 shadow-xl shadow-black/20"
+                <motion.div 
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    boxShadow: [
+                      "0 0 0px rgba(255,215,0,0)", 
+                      "0 0 20px rgba(255,215,0,0.6)", 
+                      "0 0 0px rgba(255,215,0,0)"
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                  className="flex items-center gap-3 px-8 py-3 bg-[#FFD700] text-[#0A2463] font-black text-xs tracking-[0.2em] uppercase rounded-xl shadow-xl"
                 >
                   Apply Now
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
-                </div>
+                </motion.div>
               </div>
             </Link>
 

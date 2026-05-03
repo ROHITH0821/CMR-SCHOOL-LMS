@@ -23,58 +23,72 @@ const ICON_MAP: Record<string, any> = {
   arts: Palette,
 };
 
+const FACILITIES: Facility[] = [
+  {
+    id: "labs",
+    title: "Modern Labs",
+    description: "Fully equipped Science and Computer labs for hands-on learning.",
+    icon: "labs",
+    images: [
+      "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1200",
+      "https://images.unsplash.com/photo-1510531704581-5b2870972060?q=80&w=1200",
+      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=1200",
+    ],
+  },
+  {
+    id: "library",
+    title: "Rich Library",
+    description: "A sanctuary of knowledge with over 50,000+ books and digital resources.",
+    icon: "library",
+    images: [
+      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200",
+      "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200",
+      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200",
+    ],
+  },
+  {
+    id: "sports",
+    title: "Sports Complex",
+    description: "Multi-sport courts, football turf, and professional coaching facilities.",
+    icon: "sports",
+    images: [
+      "https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?q=80&w=1200",
+      "https://images.unsplash.com/photo-1526676037777-05a232554f77?q=80&w=1200",
+      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200",
+    ],
+  },
+  {
+    id: "classrooms",
+    title: "Smart Classrooms",
+    description: "Digital-enabled classrooms with interactive boards for immersive learning.",
+    icon: "classrooms",
+    images: [
+      "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=1200",
+      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200",
+    ],
+  },
+  {
+    id: "arts",
+    title: "Arts & Studio",
+    description: "Creative spaces for music, dance, and fine arts exploration.",
+    icon: "arts",
+    images: [
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200",
+      "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1200",
+    ],
+  },
+];
 
-
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-
-export function FacilitiesGallerySection({ 
-  initialData, 
-  limit,
-  showViewAll = false
-}: { 
-  initialData?: Facility[], 
-  limit?: number,
-  showViewAll?: boolean
-}) {
-  const processFacilities = (data: Facility[]) => {
+export function FacilitiesGallerySection({ initialData }: { initialData?: Facility[] }) {
+  const [facilities] = useState<Facility[]>(() => {
+    const data = initialData || FACILITIES;
     return data.map(item => ({
       ...item,
-      images: typeof item.images === 'string' ? (item.images as string).split(',').map((s: string) => s.trim()) : item.images
+      images: typeof item.images === 'string' ? item.images.split(',').map((s: string) => s.trim()) : item.images
     }));
-  };
-
-  const [facilities, setFacilities] = useState<Facility[]>(initialData ? processFacilities(initialData) : []);
-  const [isLoading, setIsLoading] = useState(!initialData);
+  });
   const [activeFacility, setActiveFacility] = useState<Facility | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    // If initialData is provided but empty, it might mean the server fetch failed or returned no rows.
-    // If initialData is undefined, we fetch on client.
-    if (initialData !== undefined) {
-      setFacilities(processFacilities(initialData));
-      setIsLoading(false);
-      return;
-    }
-    
-    async function loadFacilities() {
-      try {
-        const data = await fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES);
-        if (data && data.length > 0) {
-          setFacilities(processFacilities(data));
-        } else {
-          setFacilities([]);
-        }
-      } catch (error) {
-        console.error("Failed to load facilities:", error);
-        setFacilities([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadFacilities();
-  }, [initialData]);
 
   const openLightbox = (facility: Facility) => {
     setActiveFacility(facility);
@@ -107,30 +121,18 @@ export function FacilitiesGallerySection({
           </h2>
         </div>
 
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-32 text-gray-400">
-            <Loader2 className="w-12 h-12 animate-spin mb-6" />
-            <p className="text-sm font-bold uppercase tracking-widest">Loading Facilities...</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {(limit ? facilities.slice(0, limit) : facilities).map((facility, idx) => {
-              const hasTitle = !!facility.title;
-              const hasImages = facility.images && (Array.isArray(facility.images) ? facility.images.length > 0 : !!facility.images);
-              
-              if (!hasTitle || !hasImages) return null;
-
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            {facilities.map((facility, idx) => {
               const Icon = ICON_MAP[facility.icon] || Book;
               const imageUrls = Array.isArray(facility.images) ? facility.images : [facility.images];
-              const firstImage = imageUrls[0];
               
-              if (!firstImage) return null;
-
               return (
                 <motion.div
-                  key={facility.id || idx}
+                  key={facility.id}
                   whileHover={{ y: -10 }}
-                  className="group relative cursor-pointer overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#fcfcfd] border border-gray-100 p-4 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)]"
+                  className={`group relative cursor-pointer overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-[#fcfcfd] border border-gray-100 p-4 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)] ${
+                    facilities.length % 2 !== 0 && idx === facilities.length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
+                  }`}
                   onClick={() => openLightbox(facility)}
                 >
                   <div className="flex items-center gap-5 mb-6">
@@ -143,7 +145,7 @@ export function FacilitiesGallerySection({
                   
                   <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-inner">
                     <Image
-                      src={firstImage}
+                      src={imageUrls[0]}
                       alt={facility.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -158,19 +160,6 @@ export function FacilitiesGallerySection({
               );
             })}
           </div>
-        )}
-
-        {showViewAll && facilities.length > (limit || 0) && (
-          <div className="mt-16 text-center">
-            <Link 
-              href="/facilities"
-              className="inline-flex items-center gap-3 bg-[#0A2463] text-white px-10 py-5 rounded-2xl font-bold transition-all hover:bg-[#F5A623] hover:gap-5 group shadow-xl shadow-[#0A2463]/10"
-            >
-              Explore All Facilities
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-        )}
       </div>
 
       {/* LIGHTBOX */}

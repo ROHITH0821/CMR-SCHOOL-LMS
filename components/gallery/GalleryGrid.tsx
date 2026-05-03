@@ -44,32 +44,23 @@ const CAMPUSES: Campus[] = ["All", "Kompally", "Suraram", "Shampur", "Kundanpall
 export function GalleryGrid({ initialData }: { initialData?: MediaItem[] }) {
   const [filter, setFilter] = useState<Campus>("All");
   const [selectedItem, setSelectedItem] = useState<MediaItem | null>(null);
-  const [galleryItems, setGalleryItems] = useState<MediaItem[]>(initialData || GALLERY_DATA);
-  const [isLoading, setIsLoading] = useState(!initialData && galleryItems.length === 0);
+  const galleryItems = initialData && initialData.length > 0 ? initialData : GALLERY_DATA;
 
-  useEffect(() => {
-    if (initialData && initialData.length > 0) return;
-    async function loadGallery() {
-      try {
-        // Fetch from Google Sheet
-        const data = await fetchSheetData<MediaItem>(
-          GOOGLE_SHEET_IDS.GALLERY
-        );
-        
-        if (data && data.length > 0) {
-          setGalleryItems(data);
-        } else {
-          // Fallback to static data if sheet is empty or fails
-          setGalleryItems(GALLERY_DATA);
-        }
-      } catch (error) {
-        setGalleryItems(GALLERY_DATA);
-      } finally {
-        setIsLoading(false);
-      }
+  // Helper to get thumbnail for video
+  const getDisplayThumbnail = (item: MediaItem) => {
+    if (item.thumbnail && !item.thumbnail.includes("example.com")) {
+      return item.thumbnail;
     }
-    loadGallery();
-  }, [initialData]);
+    if (item.type === "video") {
+      // Try to extract YouTube ID
+      const ytMatch = item.src.match(/(?:embed\/|v=)([^&?]+)/);
+      if (ytMatch && ytMatch[1]) {
+        return `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`;
+      }
+      return "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600"; // Generic video fallback
+    }
+    return item.src;
+  };
 
   const filteredData = filter === "All" 
     ? galleryItems 
@@ -95,16 +86,10 @@ export function GalleryGrid({ initialData }: { initialData?: MediaItem[] }) {
       </div>
 
       {/* GRID */}
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-          <Loader2 className="w-10 h-10 animate-spin mb-4" />
-          <p className="text-sm font-medium">Syncing with Gallery...</p>
-        </div>
-      ) : (
-        <motion.div 
-          layout
-          className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
-        >
+      <motion.div 
+        layout
+        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
+      >
         <AnimatePresence mode="popLayout">
           {filteredData.map((item) => (
             <motion.div
@@ -118,7 +103,7 @@ export function GalleryGrid({ initialData }: { initialData?: MediaItem[] }) {
               onClick={() => setSelectedItem(item)}
             >
               <Image
-                src={(!item.thumbnail || item.thumbnail.includes("example.com")) ? item.src : item.thumbnail}
+                src={getDisplayThumbnail(item)}
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -148,7 +133,6 @@ export function GalleryGrid({ initialData }: { initialData?: MediaItem[] }) {
           ))}
         </AnimatePresence>
       </motion.div>
-      )}
 
       {/* LIGHTBOX */}
       <AnimatePresence>

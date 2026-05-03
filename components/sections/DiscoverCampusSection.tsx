@@ -64,7 +64,7 @@ export function DiscoverCampusSection() {
           </p>
         </div>
 
-        <div className="mt-10 flex w-full flex-wrap justify-center gap-2 md:mt-12 md:gap-3">
+        <div className="mt-10 flex w-full flex-wrap justify-center gap-2 px-2 md:mt-12 md:gap-3">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isOn = active === tab.id;

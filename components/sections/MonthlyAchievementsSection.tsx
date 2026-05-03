@@ -1,42 +1,27 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, Calendar, MapPin, Filter, ChevronDown, Award, Loader2 } from "lucide-react";
+import { Trophy, MapPin, Filter, ChevronDown, Award, ArrowRight } from "lucide-react";
 import { ACHIEVEMENTS_DATA, type Achievement, type BranchName } from "@/lib/achievements-data";
-import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
 
 const MONTHS = ["April", "March", "February", "January", "December", "November", "October", "September", "August", "July", "June"];
 const ACADEMIC_YEARS = ["2025-26", "2024-25"];
 const BRANCHES: BranchName[] = ["Lalgadi Malakpet", "Kompally", "Suraram", "Shampur", "Kundanpally", "MB Grammar School"];
 
-export function MonthlyAchievementsSection({ initialData }: { initialData?: Achievement[] }) {
+/**
+ * MonthlyAchievementsSection - Displays filtered achievements from Google Sheets.
+ * This is a client component because it has interactive filters.
+ * Data is fetched on the server and passed as initialData.
+ */
+export function MonthlyAchievementsSection({ initialData = ACHIEVEMENTS_DATA }: { initialData?: Achievement[] }) {
   const [activeMonth, setActiveMonth] = useState("April");
   const [selectedYear, setSelectedYear] = useState("2025-26");
   const [selectedBranch, setSelectedBranch] = useState<BranchName | "All">("All");
-  const [achievements, setAchievements] = useState<Achievement[]>(initialData && initialData.length > 0 ? initialData : ACHIEVEMENTS_DATA);
-  const [isLoading, setIsLoading] = useState(!initialData || (initialData && initialData.length === 0));
-
-
-
-  useEffect(() => {
-    if (initialData && initialData.length > 0) return; // Skip if we already have data
-    async function loadAchievements() {
-      try {
-        const data = await fetchSheetData<Achievement>(GOOGLE_SHEET_IDS.ACHIEVEMENTS);
-        if (data && data.length > 0) {
-          setAchievements(data);
-        }
-      } catch (error) {
-        console.error("Failed to load achievements:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadAchievements();
-  }, []);
+  const [achievements] = useState<Achievement[]>(initialData);
 
   const filteredAchievements = useMemo(() => {
     return achievements.filter(a => 
@@ -51,11 +36,21 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
       <div className="container-custom max-w-7xl mx-auto px-6">
         
         {/* HEADER */}
-        <div className="text-center mb-16">
-          <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#F5A623]">Wall of Fame</span>
-          <h2 className="mt-4 font-display text-3xl sm:text-5xl md:text-6xl font-black text-[#0A2463] leading-tight">
-            Monthly <span className="text-[#0DB6B5]">Achievements</span>
-          </h2>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16">
+          <div className="text-center md:text-left">
+            <span className="text-[11px] font-black uppercase tracking-[0.4em] text-[#F5A623]">Wall of Fame</span>
+            <h2 className="mt-4 font-display text-3xl sm:text-5xl md:text-6xl font-black text-[#0A2463] leading-tight">
+              Monthly <span className="text-[#0DB6B5]">Achievements</span>
+            </h2>
+          </div>
+          
+          <Link 
+            href="/achievements" 
+            className="group flex items-center gap-3 bg-[#0A2463] text-white px-8 py-4 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-[#0DB6B5] transition-all shadow-xl shadow-[#0A2463]/20"
+          >
+            View All Achievements
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
         {/* FILTERS */}
@@ -107,13 +102,7 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
 
         {/* ACHIEVEMENTS GRID */}
         <div className="relative min-h-[400px]">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-32 text-gray-400">
-              <Loader2 className="w-12 h-12 animate-spin mb-6" />
-              <p className="text-sm font-bold uppercase tracking-widest">Loading Wall of Fame...</p>
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
             {filteredAchievements.length > 0 ? (
               <motion.div 
                 key={`${activeMonth}-${selectedYear}-${selectedBranch}`}
@@ -121,7 +110,7 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
+                className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
               >
                 {filteredAchievements.map((achievement, idx) => (
                   <article 
@@ -142,7 +131,13 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
                     </div>
 
                     <h3 className="font-display text-xl font-bold text-[#0A2463] mb-4 leading-snug group-hover:text-[#F5A623] transition-colors">
-                      {achievement.title}
+                      {achievement.link ? (
+                        <Link href={achievement.link} className="hover:underline">
+                          {achievement.title}
+                        </Link>
+                      ) : (
+                        achievement.title
+                      )}
                     </h3>
                     <p className="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">
                       {achievement.description}
@@ -178,7 +173,6 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
               </motion.div>
             )}
             </AnimatePresence>
-          )}
         </div>
       </div>
     </section>
