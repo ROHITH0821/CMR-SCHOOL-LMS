@@ -24,6 +24,9 @@ function SpotlightCard({
   size: "side" | "hero";
   href?: string;
 }) {
+  // Defensive check for empty source to prevent Next.js console errors
+  if (!item || !item.src) return null;
+
   const className = cn(
     "group relative block w-full overflow-hidden rounded-[28px] border border-black/[0.06] bg-white text-left shadow-[0_12px_40px_-8px_rgba(15,40,30,0.12)] transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]",
     size === "hero" && "z-10 shadow-[0_24px_60px_-12px_rgba(15,40,30,0.18)] md:scale-[1.02] md:-translate-y-1"
@@ -40,7 +43,7 @@ function SpotlightCard({
     >
       <Image
         src={item.src}
-        alt={item.alt}
+        alt={item.alt || "Gallery image"}
         fill
         className="object-cover object-center transition duration-500 group-hover:scale-[1.03]"
         sizes={size === "hero" ? "(max-width:768px) 100vw, 55vw" : "(max-width:768px) 50vw, 30vw"}

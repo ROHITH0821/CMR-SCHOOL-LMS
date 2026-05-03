@@ -33,7 +33,18 @@ export function AdmissionsCtaBanner() {
           </p>
         </div>
         <div data-gsap-tl-2 className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <motion.span whileHover={{ x: 4 }} className="inline-flex">
+          <motion.div
+            animate={{ 
+              scale: [1, 1.05, 1],
+              filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            className="inline-flex"
+          >
             <Link
               href="/admissions"
               className="inline-flex items-center gap-2 rounded-pill bg-[#F5A623] px-8 py-4 font-body text-sm font-semibold text-white shadow-soft-lg transition hover:brightness-105"
@@ -43,7 +54,7 @@ export function AdmissionsCtaBanner() {
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </Link>
-          </motion.span>
+          </motion.div>
         </div>
       </div>
     </section>

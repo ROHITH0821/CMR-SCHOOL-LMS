@@ -65,13 +65,25 @@ export function AdmissionModal() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/admissions"
-                  onClick={() => setIsOpen(false)}
-                  className="bg-[#F48A36] hover:bg-[#d97529] text-white px-6 py-3 rounded-full font-body font-semibold transition-colors"
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
                 >
-                  Apply Now
-                </Link>
+                  <Link
+                    href="/admissions"
+                    onClick={() => setIsOpen(false)}
+                    className="bg-[#F48A36] hover:bg-[#d97529] text-white px-6 py-3 rounded-full font-body font-semibold transition-colors block text-center"
+                  >
+                    Apply Now
+                  </Link>
+                </motion.div>
                 <Link
                   href="/contact"
                   onClick={() => setIsOpen(false)}

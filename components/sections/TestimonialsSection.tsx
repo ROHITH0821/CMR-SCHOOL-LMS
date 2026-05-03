@@ -118,9 +118,6 @@ export function TestimonialsSection() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none opacity-[0.03]">
-        <span className="font-display text-[20vw] font-bold text-[#0A2463]">Visions</span>
-      </div>
 
       <div className="container-custom relative z-10 mx-auto max-w-7xl px-4">
         <div className="mb-12 text-center lg:mb-16">

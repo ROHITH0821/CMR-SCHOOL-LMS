@@ -54,6 +54,9 @@ function MasonryCard({
   onTileClick?: (index: number) => void;
   linkHref?: string;
 }) {
+  // Defensive check for empty source to prevent Next.js console errors
+  if (!item || !item.src) return null;
+
   const shared = cn(
     "group mb-3 w-full max-w-full break-inside-avoid overflow-hidden rounded-[24px] border border-black/[0.07] bg-white text-left md:mb-3.5",
     "shadow-[0_10px_36px_-12px_rgba(15,40,30,0.12)] transition-[transform,box-shadow] duration-300",
@@ -64,7 +67,7 @@ function MasonryCard({
     <div className={cn("relative w-full overflow-hidden bg-neutral-100", item.imageAspectClass)}>
       <Image
         src={item.src}
-        alt={item.alt}
+        alt={item.alt || "Gallery image"}
         fill
         sizes="(max-width: 768px) 50vw, (max-width: 1280px) 40vw, (max-width: 1536px) 32vw, 28vw"
         className="object-cover object-center transition duration-500 group-hover:scale-[1.04]"

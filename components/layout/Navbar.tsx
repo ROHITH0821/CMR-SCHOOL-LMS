@@ -205,13 +205,26 @@ export function Navbar() {
             CALL US
           </Button>
 
-          <Button
-            href="/admissions#apply"
-            variant="gold"
-            className="hidden rounded-full bg-[#0DB6B5] px-5 py-2.5 text-[11px] font-bold tracking-widest text-white shadow-sm transition-colors hover:bg-[#0A2463] sm:px-6 sm:text-xs lg:flex"
+          <motion.div
+            animate={{ 
+              scale: [1, 1.05, 1],
+              filter: ["brightness(1)", "brightness(1.2)", "brightness(1)"]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            className="hidden lg:flex"
           >
-            APPLY NOW
-          </Button>
+            <Button
+              href="/admissions#apply"
+              variant="gold"
+              className="rounded-full bg-[#0DB6B5] px-5 py-2.5 text-[11px] font-bold tracking-widest text-white shadow-sm transition-colors hover:bg-[#0A2463] sm:px-6 sm:text-xs"
+            >
+              APPLY NOW
+            </Button>
+          </motion.div>
 
           <button
             type="button"
@@ -332,9 +345,21 @@ export function Navbar() {
                 transition={{ delay: NAV_LINKS.length * 0.04 }}
                 className="mt-4 flex flex-col gap-3 border-t border-[#0A2463]/10 pt-4"
               >
-                <Button href="/admissions" className="w-full justify-center rounded-2xl bg-[#0DB6B5] py-4 text-lg font-bold tracking-widest text-white shadow-md">
-                  APPLY NOW
-                </Button>
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.02, 1],
+                    filter: ["brightness(1)", "brightness(1.1)", "brightness(1)"]
+                  }}
+                  transition={{ 
+                    duration: 2.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <Button href="/admissions" className="w-full justify-center rounded-2xl bg-[#0DB6B5] py-4 text-lg font-bold tracking-widest text-white shadow-md">
+                    APPLY NOW
+                  </Button>
+                </motion.div>
                 <Button href="tel:+91XXXXXXXXXX" variant="outline" className="w-full justify-center gap-3 rounded-2xl border-[#0A2463]/20 py-4 text-lg font-bold text-[#0A2463]">
                   <Phone className="h-5 w-5" />
                   CALL US

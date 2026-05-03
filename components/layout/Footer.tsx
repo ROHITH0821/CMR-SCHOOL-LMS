@@ -17,12 +17,6 @@ export function Footer() {
 
   return (
     <footer className="relative bg-[#0A2463] pt-24 pb-12 overflow-hidden text-white border-t border-white/10">
-      {/* BACKGROUND BRANDING: Giant subtle text for "Unique" feel */}
-      <div className="absolute bottom-[-5%] left-1/2 -translate-x-1/2 pointer-events-none select-none opacity-5 w-full text-center">
-        <span className="font-display text-[22vw] font-bold leading-none tracking-tighter uppercase whitespace-nowrap text-white">
-          CMR SCHOOLS
-        </span>
-      </div>
 
       <div className="container-custom max-w-7xl mx-auto px-4 relative z-10">
         

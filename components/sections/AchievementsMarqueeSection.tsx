@@ -104,16 +104,6 @@ export function AchievementsMarqueeSection() {
       ref={sectionRef}
       className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-[#030614] py-32"
     >
-      <div className="pointer-events-none absolute left-0 top-[10%] z-0 flex w-[200vw] opacity-[0.03] sm:w-[300vw] lg:top-[15%]">
-        <div ref={textMarqueeRef} className="flex items-center gap-16 whitespace-nowrap">
-          <span className="font-display text-[10rem] font-bold uppercase tracking-widest text-white md:text-[15rem] lg:text-[22rem]">
-            MENTOR • INSPIRE • GUIDE •
-          </span>
-          <span className="font-display text-[10rem] font-bold uppercase tracking-widest text-white md:text-[15rem] lg:text-[22rem]">
-            MENTOR • INSPIRE • GUIDE •
-          </span>
-        </div>
-      </div>
 
       <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[80vw] w-[80vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F5A623] opacity-[0.08] blur-[200px] sm:h-[600px] sm:w-[600px]" />
 
