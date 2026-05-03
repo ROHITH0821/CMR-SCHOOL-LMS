@@ -19,6 +19,7 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { GalleryPreviewSection } from "@/components/sections/GalleryPreviewSection";
 import { AdmissionsCtaBanner } from "@/components/sections/AdmissionsCtaBanner";
 import { AdmissionModal } from "@/components/sections/AdmissionModal";
+import { blogPosts } from "@/lib/blog-data";
 
 import { fetchSheetData } from "@/lib/google-sheets";
 import { GOOGLE_SHEET_IDS } from "@/lib/constants";
@@ -27,7 +28,7 @@ import { unstable_cache } from "next/cache";
 // Cached data fetchers
 const getCachedFacilities = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.FACILITIES),
-  ["facilities"],
+  ["facilities-prod"],
   { revalidate: 3600, tags: ["facilities"] }
 );
 
@@ -43,12 +44,6 @@ const getCachedAlbums = unstable_cache(
   { revalidate: 3600, tags: ["albums"] }
 );
 
-const getCachedNews = unstable_cache(
-  async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.NEWS),
-  ["news"],
-  { revalidate: 3600, tags: ["news"] }
-);
-
 const getCachedEvents = unstable_cache(
   async () => fetchSheetData<any>(GOOGLE_SHEET_IDS.CALENDAR),
   ["events"],
@@ -57,19 +52,29 @@ const getCachedEvents = unstable_cache(
 
 export default async function HomePage() {
   // Parallel fetch from cache
-  const [facilitiesRes, achievementsRes, albumsRes, newsRes, eventsRes] = await Promise.allSettled([
+  const [facilitiesRes, achievementsRes, albumsRes, eventsRes] = await Promise.allSettled([
     getCachedFacilities(),
     getCachedAchievements(),
     getCachedAlbums(),
-    getCachedNews(),
     getCachedEvents(),
   ]);
-
+  
   const facilitiesData = facilitiesRes.status === 'fulfilled' ? facilitiesRes.value : [];
   const achievementsData = achievementsRes.status === 'fulfilled' ? achievementsRes.value : [];
   const albumsData = albumsRes.status === 'fulfilled' ? albumsRes.value : [];
-  const newsData = newsRes.status === 'fulfilled' ? newsRes.value : [];
   const eventsData = eventsRes.status === 'fulfilled' ? eventsRes.value : [];
+
+  const latestBlogPosts = Object.values(blogPosts).slice(0, 3).map(post => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt
+      .replace(/<[^>]*>/g, '')
+      .replace(/\[&hellip;\]|\[\.\.\.\]/g, '')
+      .trim()
+      .slice(0, 120) + '...',
+    date: post.date,
+    img: post.img
+  }));
 
   return (
     <>
@@ -90,7 +95,7 @@ export default async function HomePage() {
       </Suspense>
       <MonthlyAchievementsSection initialData={achievementsData} />
       <UpcomingEventsSection initialData={eventsData} />
-      <WhatsHappeningSection initialData={newsData} />
+      <WhatsHappeningSection initialData={latestBlogPosts} />
       {/* <TestimonialsSection /> */}
       <GalleryPreviewSection initialData={albumsData} />
       <AdmissionsCtaBanner />

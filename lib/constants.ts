@@ -76,8 +76,9 @@ export const NAV_LINKS: NavItem[] = [
     href: "/academics",
     label: "Academics",
     dropdown: [
+      { href: "/curriculum", label: "Our curriculum" },
       { href: "/academics#programs", label: "Programs" },
-      { href: "/academics#curriculum", label: "Curriculum" },
+      { href: "/academics#curriculum", label: "Curriculum Highlights" },
       { href: "/academics#infrastructure", label: "Infrastructure" },
       { href: "/academics#calendar", label: "Academic calendar" },
     ],
@@ -103,7 +104,6 @@ export const FOOTER_QUICK = [
   { href: "/academics", label: "Academics" },
   { href: "/admissions", label: "Admissions" },
   { href: "/faculty", label: "Faculty" },
-  { href: "/news", label: "News" },
   { href: "/blog", label: "Blog" },
   { href: "/portal", label: "Parent Portal" },
 ] as const;
@@ -121,7 +121,7 @@ export interface GoogleSheetIds {
   ACHIEVEMENTS: string;
   FACILITIES: string;
   CALENDAR: string;
-  NEWS: string;
+
   FAQS: string;
   FACULTY: string;
 }
@@ -134,10 +134,10 @@ export const GOOGLE_SHEET_IDS: GoogleSheetIds = {
   ALBUMS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=536318328&single=true&output=csv",
   
   // Other Sections (User to replace with their published CSV links)
-  ACHIEVEMENTS: "REPLACE_WITH_CSV_LINK",
-  FACILITIES: "REPLACE_WITH_CSV_LINK",
+  ACHIEVEMENTS: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=418880037&single=true&output=csv",
+  FACILITIES: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQa9H3I0Z9ti5uP6Dk7lOV133fqdzGkEK3MFepbgEZcrBRZLZBsCZQM1u-SHcZBddvBzccEyAac5xFJ/pub?gid=1268633031&single=true&output=csv",
   CALENDAR: "REPLACE_WITH_CSV_LINK",
-  NEWS: "REPLACE_WITH_CSV_LINK",
+
   FAQS: "REPLACE_WITH_CSV_LINK",
   FACULTY: "REPLACE_WITH_CSV_LINK",
 };

@@ -35,7 +35,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cmr-malakpet.example.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cmrschoolkompally.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

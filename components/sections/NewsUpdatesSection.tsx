@@ -47,7 +47,7 @@ export function NewsUpdatesSection() {
                   <p className="mt-2 font-body text-sm text-textSecondary">{p.excerpt}</p>
                   <p className="mt-3 text-xs text-textMuted">{p.date}</p>
                   <Link
-                    href="/news"
+                    href="/blog"
                     className="mt-4 inline-block text-sm font-semibold text-highlight hover:underline"
                   >
                     Read more

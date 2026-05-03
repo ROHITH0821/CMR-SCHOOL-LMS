@@ -133,7 +133,7 @@ export function Footer() {
             <h5 className="font-display text-[#0DB6B5] font-black text-xs tracking-[0.3em] uppercase mb-8">Community</h5>
             <ul className="space-y-4">
               <li><Link href="/blog" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Principal's Blog</Link></li>
-              <li><Link href="/news" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">News Updates</Link></li>
+              <li><Link href="/blog" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Blog & Insights</Link></li>
               <li><Link href="/achievements" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Hall of Fame</Link></li>
               <li><Link href="/gallery" className="text-gray-400 hover:text-white font-bold text-sm transition-colors">Alumni Network</Link></li>
             </ul>

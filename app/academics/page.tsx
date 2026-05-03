@@ -41,15 +41,25 @@ export default async function AcademicsPage() {
       </section>
 
       <section id="curriculum" className="scroll-mt-28 section-padding container-custom">
-        <h2 className="mb-8 font-display text-2xl text-primary">Curriculum highlights</h2>
-        <ul className="grid gap-4 md:grid-cols-2">
-          <li className="rounded-card border border-border p-5 shadow-soft">
-            <strong className="text-primary">Official NCERT/CBSE Curriculum</strong>
-            <p className="mt-2 text-sm text-textSecondary">Full compliance with NCF-FS and NCF-SE for structured, progressive learning.</p>
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+          <div className="max-w-2xl">
+            <h2 className="font-display text-4xl text-primary">Curriculum framework</h2>
+            <p className="mt-4 text-textSecondary">
+              Our academic roadmap is designed to nurture critical thinking and holistic development through a structured, age-appropriate framework.
+            </p>
+          </div>
+          <Button href="/curriculum" variant="outlineDark">
+            Explore full curriculum
+          </Button>
+        </div>
+        <ul className="grid gap-6 md:grid-cols-2">
+          <li className="rounded-card border border-border p-8 shadow-soft transition hover:border-[#0DB6B5]/50">
+            <strong className="text-xl text-primary block mb-3">Official NCERT/CBSE Curriculum</strong>
+            <p className="text-textSecondary">Full compliance with NCF-FS and NCF-SE for structured, progressive learning across all developmental stages.</p>
           </li>
-          <li className="rounded-card border border-border p-5 shadow-soft">
-            <strong className="text-primary">NEP 2020 Alignment</strong>
-            <p className="mt-2 text-sm text-textSecondary">Multidisciplinary projects and competency-based assessments as per board standards.</p>
+          <li className="rounded-card border border-border p-8 shadow-soft transition hover:border-[#F5A623]/50">
+            <strong className="text-xl text-primary block mb-3">NEP 2020 Alignment</strong>
+            <p className="text-textSecondary">Multidisciplinary projects, competency-based assessments, and a focus on skill development as per modern global standards.</p>
           </li>
         </ul>
       </section>

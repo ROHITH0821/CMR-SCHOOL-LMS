@@ -7,25 +7,25 @@ import { ArrowRight, Newspaper } from "lucide-react";
 
 const STATIC_ITEMS = [
   {
-    slug: "nep-labs-opening",
-    title: "NEP-aligned labs open for students",
-    excerpt: "Hands-on STEM and language learning in newly inaugurated spaces.",
-    date: "Mar 12, 2026",
-    img: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1600&q=85&auto=format&fit=crop",
+    slug: "celebrating-sankranthi-at-cmr-school-traditions-joy-and-learning-together",
+    title: "Celebrating Sankranthi at CMR School",
+    excerpt: "The festival becomes a joyful classroom where traditions meet learning, and culture comes alive through participation.",
+    date: "January 8, 2026",
+    img: "https://cmrschoolkompally.com/wp-content/uploads/2026/01/sss.png",
   },
   {
-    slug: "quiz-finals",
-    title: "Citywide quiz: Lalgadi Malakpet campus hosts finals",
-    excerpt: "Fifteen schools, one trophy — see how our students performed.",
-    date: "Feb 28, 2026",
-    img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&q=85&auto=format&fit=crop",
+    slug: "teaching-values-in-school-respect-responsibility-and-empathy",
+    title: "Teaching Values: Respect & Responsibility",
+    excerpt: "Respect, responsibility, and empathy are not just good qualities—they are life skills that shape character.",
+    date: "January 8, 2026",
+    img: "https://cmrschoolkompally.com/wp-content/uploads/2026/01/School.png",
   },
   {
-    slug: "principal-spring",
-    title: "Principal’s note: spring term",
-    excerpt: "Reflections on resilience, routines, and reading together.",
-    date: "Feb 05, 2026",
-    img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1600&q=85&auto=format&fit=crop",
+    slug: "how-reading-habits-improve-academic-performance-in-children",
+    title: "How Reading Habits Improve Performance",
+    excerpt: "Just like regular exercise strengthens the body, regular reading strengthens the mind and builds focus.",
+    date: "January 8, 2026",
+    img: "https://cmrschoolkompally.com/wp-content/uploads/2026/01/Reading.png",
   },
 ];
 
@@ -34,7 +34,7 @@ interface NewsItem {
   title: string;
   excerpt: string;
   date: string;
-  img: string;
+  img: string | null;
 }
 
 interface WhatsHappeningSectionProps {
@@ -62,10 +62,10 @@ export function WhatsHappeningSection({ initialData }: WhatsHappeningSectionProp
             </p>
           </div>
           <Link
-            href="/news"
+            href="/blog"
             className="inline-flex items-center gap-2 rounded-full border border-[#0A2463]/20 bg-white px-5 py-2.5 text-sm font-semibold text-[#0A2463] shadow-sm transition hover:border-[#0DB6B5] hover:bg-[#0DB6B5]/5"
           >
-            View all news
+            View all insights
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
@@ -82,16 +82,18 @@ export function WhatsHappeningSection({ initialData }: WhatsHappeningSectionProp
                 items.slice(0, 3).length % 2 !== 0 && i === items.slice(0, 3).length - 1 ? "col-span-2 sm:col-span-1 justify-self-center w-full sm:w-auto max-w-sm" : ""
               }`}
             >
-              <Link href={`/news/${item.slug}`} className="block">
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={item.img}
-                    alt=""
-                    fill
-                    className="object-cover transition duration-500 group-hover:scale-[1.04]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
+              <Link href={`/${item.slug}`} className="block">
+                {item.img && (
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={item.img}
+                      alt=""
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                )}
                 <div className="p-5">
                   <p className="font-mono text-[11px] font-medium uppercase tracking-wider text-neutral-400">{item.date}</p>
                   <h3 className="mt-2 font-display text-lg font-bold leading-snug text-[#0A2463] group-hover:text-[#0DB6B5]">

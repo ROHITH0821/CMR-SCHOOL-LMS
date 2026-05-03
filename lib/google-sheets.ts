@@ -16,7 +16,6 @@ export async function fetchSheetData<T>(sheetIdOrUrl: string, gid: string = '0')
       url = `https://docs.google.com/spreadsheets/d/${sheetIdOrUrl}/export?format=csv&gid=${gid}`;
     }
     
-    // Use a reasonable cache time. In production, we might want ISR to handle this.
     const response = await fetch(url, { 
       next: { 
         revalidate: process.env.NODE_ENV === 'development' ? 0 : 600 // 10 minutes in prod, no cache in dev
@@ -28,11 +27,12 @@ export async function fetchSheetData<T>(sheetIdOrUrl: string, gid: string = '0')
     }
 
     const csvText = await response.text();
-    const rows = csvText.split('\n').filter(row => row.trim() !== '');
+    const rows = csvText.split(/\r?\n/).filter(row => row.trim() !== '');
     
     if (rows.length < 2) return [];
 
     const headers = parseCSVLine(rows[0]);
+
     const dataRows = rows.slice(1);
 
     return dataRows.map((row) => {

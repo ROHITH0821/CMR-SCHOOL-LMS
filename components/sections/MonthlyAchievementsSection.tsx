@@ -16,11 +16,13 @@ export function MonthlyAchievementsSection({ initialData }: { initialData?: Achi
   const [activeMonth, setActiveMonth] = useState("April");
   const [selectedYear, setSelectedYear] = useState("2025-26");
   const [selectedBranch, setSelectedBranch] = useState<BranchName | "All">("All");
-  const [achievements, setAchievements] = useState<Achievement[]>(initialData || ACHIEVEMENTS_DATA);
-  const [isLoading, setIsLoading] = useState(!initialData);
+  const [achievements, setAchievements] = useState<Achievement[]>(initialData && initialData.length > 0 ? initialData : ACHIEVEMENTS_DATA);
+  const [isLoading, setIsLoading] = useState(!initialData || (initialData && initialData.length === 0));
+
+
 
   useEffect(() => {
-    if (initialData) return; // Skip if we already have data
+    if (initialData && initialData.length > 0) return; // Skip if we already have data
     async function loadAchievements() {
       try {
         const data = await fetchSheetData<Achievement>(GOOGLE_SHEET_IDS.ACHIEVEMENTS);
